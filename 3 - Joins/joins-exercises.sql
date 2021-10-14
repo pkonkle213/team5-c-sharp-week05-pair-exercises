@@ -72,14 +72,58 @@ WHERE
 -- 6. The average city population of cities in Asia
 -- (average city population in Asia: 395,019)
 
+SELECT
+	AVG(cit.population) AS AveragePopulation
+FROM
+	country cou
+	INNER JOIN city cit ON cit.countrycode = cou.code
+WHERE
+	cou.continent = 'Asia';
+
 -- 7. The number of cities in countries where English is an official language
 -- (number of cities where English is official language: 523)
+
+SELECT
+	COUNT(cit.name) AS NumberOfCities
+FROM
+	country cou
+	INNER JOIN city cit ON cit.countrycode = cou.code
+	INNER JOIN countrylanguage cola ON cola.countrycode = cou.code
+WHERE
+	cola.language = 'English' AND cola.isofficial = 1;	
 
 -- 8. The average population of cities in countries where the official language is English
 -- (average population of cities where English is official language: 285,809)
 
+SELECT
+	AVG(cit.population) AS AverageCityPopulationWhereEnglishOfficial
+FROM
+	countrylanguage cola
+	INNER JOIN city cit ON cit.countrycode = cola.countrycode
+WHERE
+	cola.language = 'English' AND cola.isofficial = 1;	
+
 -- 9. The names of all of the continents and the population of the continent’s largest city
 -- (6 rows, largest population for North America: 8,591,309)
 
+SELECT
+	cou.continent,
+	MAX(cit.population) AS 'LargestPopulation'
+FROM
+	country cou
+	INNER JOIN city cit ON cit.countrycode = cou.code
+GROUP BY
+	cou.continent
+
 -- 10. The names of all of the cities in South America that have a population of more than 1 million people and the official language of each city’s country
 -- (29 rows)
+
+SELECT
+	cit.name,
+	cola.language
+FROM
+	country cou
+	INNER JOIN city cit ON cit.countrycode = cou.code
+	INNER JOIN countrylanguage cola ON cola.countrycode = cou.code
+WHERE
+	cou.continent = 'South America' AND cola.isofficial = 1 AND cit.population > 1000000;
