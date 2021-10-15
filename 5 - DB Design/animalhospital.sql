@@ -24,11 +24,11 @@ CREATE TABLE visit (
     id integer NOT NULL,
 	date string(10) NOT NULL,
     petid integer NOT NULL,
-	procedureid integer NOT NULL,
+	proceedureid integer NOT NULL,
 	invoiceid integer NOT NULL,
     CONSTRAINT pk_visit_id PRIMARY KEY (id),
 	CONSTRAINT fk_petid (petid) references pet(id),
-	CONSTRAINT fk_procedureid (procedureid) references procedure(id),
+	CONSTRAINT fk_procedureid (proceedureid) references proceedure(id),
 	CONSTRAINT fk_invoiceid (invoiceid) references invoice(id)
 );
 
@@ -50,3 +50,29 @@ CREATE TABLE owner (
     CONSTRAINT pk_owner_id PRIMARY KEY (id),
     CONSTRAINT fk_address_id FOREIGN KEY (addressid) REFERENCES address(id)
 );
+
+CREATE TABLE address (
+    id integer NOT NULL,
+	streetaddress varchar(64) NOT NULL,
+    city varchar(64) NOT NULL,
+	district varchar(64) NOT NULL,
+	postalcode integer NOT NULL,
+    CONSTRAINT pk_address_id PRIMARY KEY (id)
+);
+
+CREATE TABLE invoice (
+    id integer NOT NULL,
+    paymentmethod varchar(64) NOT NULL,
+    total decimal NOT NULL,
+    taxpercent decimal NOT NULL,
+    CONSTRAINT pk_invoice_id PRIMARY KEY (id)
+);
+
+CREATE TABLE proceedure (
+    id integer NOT NULL,
+    description varchar(64) NOT NULL,
+    cost decimal NOT NULL,
+    CONSTRAINT pk_proceedure_id PRIMARY KEY (id)
+);
+
+COMMIT TRANSACTION
