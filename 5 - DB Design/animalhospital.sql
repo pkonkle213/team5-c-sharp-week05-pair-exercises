@@ -19,38 +19,6 @@ GO
 -- Begin a TRANSACTION that must complete with no errors
 BEGIN TRANSACTION;
 
-
-CREATE TABLE visit (
-    id integer NOT NULL,
-	date string(10) NOT NULL,
-    petid integer NOT NULL,
-	proceedureid integer NOT NULL,
-	invoiceid integer NOT NULL,
-    CONSTRAINT pk_visit_id PRIMARY KEY (id),
-	CONSTRAINT fk_petid (petid) references pet(id),
-	CONSTRAINT fk_procedureid (proceedureid) references proceedure(id),
-	CONSTRAINT fk_invoiceid (invoiceid) references invoice(id)
-);
-
-CREATE TABLE pet (
-    id integer NOT NULL,
-    name varchar(64) NOT NULL,
-    type varchar(10) NOT NULL,
-    ownerid integer NOT NULL,
-    age integer NOT NULL,
-    CONSTRAINT pk_pet_id PRIMARY KEY (id),
-    CONSTRAINT fk_ownerid FOREIGN KEY (ownerid) REFERENCES owner(id)
-);
-
-CREATE TABLE owner (
-    id integer NOT NULL,
-    firstname varchar(64) NOT NULL,
-    lastname varchar(64) NOT NULL,
-    addressid integer NOT NULL,
-    CONSTRAINT pk_owner_id PRIMARY KEY (id),
-    CONSTRAINT fk_address_id FOREIGN KEY (addressid) REFERENCES address(id)
-);
-
 CREATE TABLE address (
     id integer NOT NULL,
 	streetaddress varchar(64) NOT NULL,
@@ -73,6 +41,37 @@ CREATE TABLE proceedure (
     description varchar(64) NOT NULL,
     cost decimal NOT NULL,
     CONSTRAINT pk_proceedure_id PRIMARY KEY (id)
+);
+
+CREATE TABLE owner (
+    id integer NOT NULL,
+    firstname varchar(64) NOT NULL,
+    lastname varchar(64) NOT NULL,
+    addressid integer NOT NULL,
+    CONSTRAINT pk_owner_id PRIMARY KEY (id),
+    CONSTRAINT fk_address_id FOREIGN KEY (addressid) REFERENCES address(id)
+);
+
+CREATE TABLE pet (
+    id integer NOT NULL,
+    name varchar(64) NOT NULL,
+    type varchar(10) NOT NULL,
+    ownerid integer NOT NULL,
+    age integer NOT NULL,
+    CONSTRAINT pk_pet_id PRIMARY KEY (id),
+    CONSTRAINT fk_ownerid FOREIGN KEY (ownerid) REFERENCES owner(id)
+);
+
+CREATE TABLE visit (
+    id integer NOT NULL,
+	date DATE NOT NULL,
+    petid integer NOT NULL,
+	proceedureid integer NOT NULL,
+	invoiceid integer NOT NULL,
+    CONSTRAINT pk_visit_id PRIMARY KEY (id),
+	CONSTRAINT fk_petid FOREIGN KEY (petid) REFERENCES pet(id),
+	CONSTRAINT fk_procedureid FOREIGN KEY (proceedureid) REFERENCES proceedure(id),
+	CONSTRAINT fk_invoiceid FOREIGN KEY (invoiceid) REFERENCES invoice(id)
 );
 
 COMMIT TRANSACTION
